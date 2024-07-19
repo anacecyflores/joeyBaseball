@@ -278,19 +278,13 @@
         </div>
     </div> -->
     <!-- Contact-->
+
     <section class="page-section" id="contact">
         <div class="container">
             <div class="text-center">
                 <h2 class="section-heading text-uppercase">Contact Us</h2>
-                <!-- <h3 class="section-subheading text-muted">Joey Lara</h3> -->
+                <!-- <img src="path/to/your/image.jpg" alt="Description of image" style="width:100px; height:auto;"> -->
             </div>
-            <!-- * * * * * * * * * * * * * * *-->
-            <!-- * * SB Forms Contact Form * *-->
-            <!-- * * * * * * * * * * * * * * *-->
-            <!-- This form is pre-integrated with SB Forms.-->
-            <!-- To make this form functional, sign up at-->
-            <!-- https://startbootstrap.com/solution/contact-forms-->
-            <!-- to get an API token!-->
             <form id="contactForm" data-sb-form-api-token="API_TOKEN">
                 <div class="row align-items-stretch mb-5">
                     <div class="col-md-6">
@@ -334,8 +328,8 @@
                         <div class="fw-bolder">Form submission successful!</div>
                         JWL Baseball will reach out soon
                         <br />
-                        <a
-                            href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                        <!-- <a
+                            href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a> -->
                     </div>
                 </div>
                 <!-- Submit error message-->
@@ -345,37 +339,53 @@
                 <div class="d-none" id="submitErrorMessage">
                     <div class="text-center text-danger mb-3">Error sending message!</div>
                 </div>
-                <!-- Submit Button--><!-- Add the email address to a data attribute of the button -->
+                <!-- Submit Button-->
                 <div class="text-center">
                     <button class="btn btn-primary btn-xl text-uppercase" id="submitButton" type="submit"
                         data-email="joseph@jwlbaseball.com">Send Message</button>
                 </div>
-
-                <!-- Include the script to handle the email sending functionality -->
-                <script>
-                    // Get the button element
-                    const submitButton = document.getElementById('submitButton');
-
-                    // Add a click event listener to the button
-                    submitButton.addEventListener('click', function () {
-                        // Get the email address from the data-email attribute
-                        const emailAddress = submitButton.getAttribute('data-email');
-
-                        // Compose the email subject and body
-                        const subject = 'Important Message';
-                        const body = 'This is the email content you want to send.';
-
-                        // Create a mailto link with the email address, subject, and body
-                        const mailtoLink = `mailto:${encodeURIComponent(emailAddress)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-                        // Open the mail client with the mailto link
-                        window.location.href = mailtoLink;
-                    });
-                </script>
-
             </form>
         </div>
     </section>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                message: document.getElementById('message').value
+            };
+
+            fetch('https://script.google.com/macros/s/AKfycbweskFpxQfWEwfeZ2tP9y6skKZeVK5kaikWa0OHUB4NynniYnID9FlFQS17ailTbCc7sg/exec', {
+                method: 'POST',
+                body: JSON.stringify(formData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        document.getElementById('submitSuccessMessage').classList.remove('d-none');
+                        document.getElementById('submitErrorMessage').classList.add('d-none');
+                    } else {
+                        document.getElementById('submitSuccessMessage').classList.add('d-none');
+                        document.getElementById('submitErrorMessage').classList.remove('d-none');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('submitSuccessMessage').classList.add('d-none');
+                    document.getElementById('submitErrorMessage').classList.remove('d-none');
+                });
+        });
+    </script>
+
+
+
     <!-- Footer-->
     <footer class="footer py-4">
         <div class="container">
